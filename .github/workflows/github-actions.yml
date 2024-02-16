@@ -47,6 +47,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/moneyti:latest
-            sudo docker tag ${{ secrets.DOCKER_USERNAME }}/moneyti:latest moneyti
-            sudo docker run -d -p 8080:8080 joowojr/moneyti:latest
+            sudo docker tag ${{ secrets.DOCKER_USERNAME }}/moneyti:latest
+            sudo docker run -d -p --name moneyti-server 8080:8080 joowojr/moneyti:latest
             docker image prune -af
