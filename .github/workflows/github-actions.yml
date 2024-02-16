@@ -23,9 +23,6 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Run chmod to allow gradlew executable
-        run: chmod +x ./gradlew
-
       - name: Copy secret
         env:
           GCP_SECRET: ${{ secrets.GCP_CREDENTIALS }}
@@ -33,10 +30,15 @@ jobs:
           GCP_SECRET_DIR_FILE_NAME: gcp-credentials.json
         run: echo $GCP_SECRET | base64 --decode > $GCP_SECRET_DIR/$GCP_SECRET_DIR_FILE_NAME
 
-      - name: Set application.yml
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: ./src/main/resources/application.yml
+      - name: Set environment properties
+        run: |
+          cd ./src/main/resources
+          touch ./application.yaml
+          echo "${{ secrets.APPLICATION }}" >> ./application.yml
+        shell: bash
+
+      - name: Run chmod to allow gradlew executable
+        run: chmod +x ./gradlew
 
       - name: Build with Gradle
         uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25
