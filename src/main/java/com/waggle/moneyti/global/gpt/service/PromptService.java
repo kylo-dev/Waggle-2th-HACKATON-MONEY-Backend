@@ -1,20 +1,26 @@
 package com.waggle.moneyti.global.gpt.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.waggle.moneyti.domain.MoneyTI.MoneyTI;
 import com.waggle.moneyti.domain.MoneyTI.repository.MoneyTIRepository;
 import com.waggle.moneyti.global.config.ChatGPTConfig;
 import com.waggle.moneyti.global.gpt.dto.ChatMessage;
 import com.waggle.moneyti.global.gpt.dto.ChatRequest;
 import com.waggle.moneyti.global.gpt.dto.ChatResponse;
-import java.util.ArrayList;
-import java.util.List;
+import com.waggle.moneyti.global.gpt.dto.ChatResultResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.json.JSONParser;
+import org.apache.tomcat.util.json.ParseException;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,12 +36,12 @@ public class PromptService {
     @Value("${chatgpt.url}")
     private String url;
 
-    public String prompt(Long moneyTIId) {
+    public ChatResultResponse prompt(String moneyTI) throws ParseException {
         // 토큰 정보가 포함된 Header 가져오기
         HttpHeaders headers = chatGPTConfig.httpHeaders();
 
         // Create request
-        ChatRequest chatRequest = generateChatPrompt(moneyTIId);
+        ChatRequest chatRequest = generateChatPrompt(moneyTI);
         HttpEntity<ChatRequest> requestEntity = new HttpEntity<>(chatRequest, headers);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -44,10 +50,16 @@ public class PromptService {
         if (response == null || response.getChoices() == null || response.getChoices().isEmpty()) {
             throw new RuntimeException();
         }
-        return response.getChoices().get(0).getMessage().getContent();
+        String result =  response.getChoices().get(0).getMessage().getContent();
+
+        JSONParser jsonParser = new JSONParser(result);
+        Object obj = jsonParser.parse();
+        ObjectMapper mapper = new ObjectMapper();
+        JSONObject jsonObj = mapper.convertValue(obj, JSONObject.class);
+        return new ChatResultResponse((String) jsonObj.get("recommendHabit"), (String) jsonObj.get("recommendProduct"));
     }
 
-    private ChatRequest generateChatPrompt(Long moneyTIId) {
+    private ChatRequest generateChatPrompt(String request) {
 
         // GPT 프롬프트 엔지니어링 부분
         List<ChatMessage> messages = new ArrayList<>();
@@ -69,13 +81,13 @@ public class PromptService {
             .role("system")
             .content(
                 "당신은 고객의 특성을 분석하여 가장 잘 맞는 금융상품과 소비습관을 추천하는 임무를 맡고 있습니다." +
-                    "당신은 결과 추천으로 \"RecommendHabit\"과 \"RecommendProduct\"의 두 가지 구성 요로 JSON 형식으로 추천합니다."
+                    "당신은 결과 추천으로 \"recommendHabit\"과 \"recommendProduct\"의 두 가지 구성 요소로 JSON 형식으로 추천합니다."
                     +
                     " \"소비습관\", \"추천 상품\"을 간략하게 2줄로 추천과 설명의 글을 작성해줘.")
             .build());
 
         //GPT에 유저 정보 제공 (Context)
-        MoneyTI moneyTI = moneyTIRepository.findById(moneyTIId).get();
+        MoneyTI moneyTI = moneyTIRepository.findByName(request).get();
 
         String userInfo = generateUserInfo(moneyTI.getPrompt());
 
