@@ -37,13 +37,8 @@ jobs:
           echo "${{ secrets.APPLICATION }}" >> ./application.yml
         shell: bash
 
-      - name: Run chmod to allow gradlew executable
-        run: chmod +x ./gradlew
-
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25
-        with:
-          arguments: build
+        run: ./gradlew build
 
       - name: Docker build and push
         run: |
