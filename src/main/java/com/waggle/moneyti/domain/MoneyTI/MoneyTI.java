@@ -1,9 +1,12 @@
 package com.waggle.moneyti.domain.MoneyTI;
 
-import com.waggle.moneyti.global.common.BaseTimeEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 public class MoneyTI {
 
     @Id
@@ -19,4 +23,5 @@ public class MoneyTI {
 
     private String name;
 
+    private String prompt;
 }

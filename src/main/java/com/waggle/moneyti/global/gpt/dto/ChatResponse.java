@@ -17,6 +17,6 @@ public class ChatResponse {
     @NoArgsConstructor
     public static class Choice {
         private int index;
-        private ChatMessage chatMessage;
+        private ChatMessage message;
     }
 }
