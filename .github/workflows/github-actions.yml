@@ -11,8 +11,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    container: 'centos:latest'
+    runs-on: centos-latest
 
     steps:
       - name: Checkout
