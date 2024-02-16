@@ -1,13 +1,14 @@
 package com.waggle.moneyti.domain.Board.dto;
 
 import com.waggle.moneyti.domain.Board.Board;
-import com.waggle.moneyti.domain.enums.MoneyTI;
+import com.waggle.moneyti.domain.MoneyTI.MoneyTI;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 
 public class BoardResponse {
@@ -44,23 +45,22 @@ public class BoardResponse {
         private String content;
 
         @Schema(description = "MoneyTI 유형")
-        private String moneyti;
+        private String moneyTI;
     }
 
     public static BoardList toBoardList(Board board) {
 
         return BoardList.builder()
             .content(board.getContent())
-            .moneyti(board.getMoneyTI().getMoneyTI())
+                .moneyTI(board.getMoneyTI().getName())
             .build();
     }
 
 
-    public static Board toEntity(BoardRequest request) {
-
+    public static Board toEntity(MoneyTI moneyTI, String content) {
         return Board.builder()
-            .content(request.getContent())
-            .moneyTI(MoneyTI.valueOf(request.getMoneyti()))
+            .content(content)
+            .moneyTI(moneyTI)
             .build();
     }
 }

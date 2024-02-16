@@ -1,7 +1,6 @@
-package com.waggle.moneyti.domain.Board;
+package com.waggle.moneyti.domain.Recommend;
 
 import com.waggle.moneyti.domain.MoneyTI.MoneyTI;
-import com.waggle.moneyti.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,9 +8,7 @@ import lombok.*;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
-public class Board extends BaseTimeEntity {
-
+public class Recommend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -19,6 +16,6 @@ public class Board extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "moneyti_id")
     private MoneyTI moneyTI;
-    
+
     private String content;
 }
