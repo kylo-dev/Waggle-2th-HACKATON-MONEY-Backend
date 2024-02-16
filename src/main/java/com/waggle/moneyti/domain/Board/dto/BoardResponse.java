@@ -51,7 +51,7 @@ public class BoardResponse {
 
         return BoardList.builder()
             .content(board.getContent())
-            .moneyti(board.getMoneyTI().getMoneyTId())
+            .moneyti(board.getMoneyTI().getMoneyTI())
             .build();
     }
 
