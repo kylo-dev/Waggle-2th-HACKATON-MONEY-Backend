@@ -6,7 +6,6 @@ build/
 !**/src/test/**/build/
 
 application.yml
-src/main/resources/gcp-credentials.json
 
 ### STS ###
 .apt_generated
