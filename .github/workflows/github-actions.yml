@@ -45,10 +45,9 @@ jobs:
           host: ${{ secrets.GCP_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          #          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             docker stop $(docker ps -a -q) 
             docker rm $(docker ps -a -q) 
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/moneyti:latest
             sudo docker tag ${{ secrets.DOCKER_USERNAME }}/moneyti:latest moneyti
-            sudo docker-compose up -d
+            sudo docker run -p 8080:8080 joowojr/moneyti:latest
