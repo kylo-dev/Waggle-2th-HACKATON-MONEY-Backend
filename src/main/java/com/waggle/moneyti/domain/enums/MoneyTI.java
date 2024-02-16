@@ -6,13 +6,12 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum MoneyTI {
-    A("자수성가족"),
-    B("온라인소비족"),
-    C("스크루지족"),
-    D("욜로족"),
-    E("파이어족"),
-    F("생존족"),
-    G("천재일우족");
+    SELFMADE("자수성가족"),
+    SCROOGE("스크루지족"),
+    YOLO("욜로족"),
+    FIRE("파이어족"),
+    SURVIVOR("생존족"),
+    GOLDEN("천재일우족");
 
-    private final String moneyTI;
+    private final String moneyTId;
 }
