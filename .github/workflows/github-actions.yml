@@ -48,5 +48,6 @@ jobs:
           script: |
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/moneyti:latest
             sudo docker tag ${{ secrets.DOCKER_USERNAME }}/moneyti:latest moneyti
+            sudo docker rm -f moneyti-server
             sudo docker run -d --name moneyti-server -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/moneyti:latest
             docker image prune -af
