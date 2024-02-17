@@ -33,8 +33,8 @@ public class MoneyTIService {
         HashMap<String, Integer> score = new HashMap<>();
         moneyTIList.forEach(moneyTI -> score.put(moneyTI.getName(),0));
 
-        for (int id = 0; id < request.length; id++) {
-            if (request[id]==1) {
+        for (int id = 1; id < request.length+1; id++) {
+            if (request[id-1]==1) {
                 moneyTIList = moneyTIRecommendRepository.findByRecommendId((long) id).stream().map(MoneyTIRecommend::getMoneyTI).toList();
                 moneyTIList.forEach(moneyTI -> {
                     String key = moneyTI.getName();
