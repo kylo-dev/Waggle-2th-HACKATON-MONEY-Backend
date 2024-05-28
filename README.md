@@ -20,7 +20,7 @@
 
 
 ## 💿 ERD
-![image](https://github.com/Waggle-2th-HACKATON-MONEY/Backend/assets/103489352/77f5806f-95eb-4a6c-bac4-a7609285073e)
+<img src="https://github.com/Waggle-2th-HACKATON-MONEY/Backend/assets/103489352/77f5806f-95eb-4a6c-bac4-a7609285073e" width="550" />
 
 
 ### 시연 영상
